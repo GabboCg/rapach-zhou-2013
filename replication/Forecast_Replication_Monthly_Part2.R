@@ -234,7 +234,21 @@ for(i in 1:(P_0+P)){
           FC_OTHER_CT[i,2] <- FC_OTHER[i,2])
    
    # Pooled forecast: DMSFE
+   # powers_t <- sort(seq(0, i-2, 1), decreasing = TRUE)
+   # m <- t(sum((kronecker(matrix(1, nrow = 1, ncol = N), (theta*matrix(1, nrow = i-1, ncol = 1))^powers_t))*((kronecker(matrix(1, nrow = 1, ncol = N), Y[(R+1):(R+(i-1))]) - FC_ECON[1:(i-1),])^2)))
+   # omega <- (m^(-1))/(sum(m^(-1)))
+   # FC_OTHER[i,3] <- FC_ECON[i,]*omega
+   # 
+   # ifelse(FC_OTHER[i,3] < 0,
+   #        FC_OTHER_CT[i,3] <- 0,
+   #        FC_OTHER_CT[i,3] <- FC_OTHER[i,3])
    
+   # Sum-of-the-parts forecast
+   FC_OTHER[i,5] <- mean(SopData$E_growth[(R+(i-1)-MA_SOP + 1):(R+(i-1))]) + SopData$DP_SOP[(R+(i-1))] - SopData$r_f[(R+(i-1))]
+   
+   ifelse(FC_OTHER[i,5] < 0,
+          FC_OTHER_CT[i,5] <- 0,
+          FC_OTHER_CT[i,5] <- FC_OTHER[i,5])
    
   }
 }
